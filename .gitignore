@@ -1,7 +1,4 @@
-.env
-.env.*
 .vercel
-node_modules/
+node_modules
 middleware.js
 vercel.json
-.vercelignore
