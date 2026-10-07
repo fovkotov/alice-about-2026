@@ -64,6 +64,12 @@
     root.classList.add("gate-open");
     const overlay = document.getElementById("alice-client-gate");
     if (overlay) overlay.remove();
+    // First-screen CSS/JS entrances wait for this (or for .gate-open).
+    try {
+      document.dispatchEvent(new CustomEvent("alice-gate-open"));
+    } catch {
+      /* ignore */
+    }
   }
 
   function showError(form) {

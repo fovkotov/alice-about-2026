@@ -432,17 +432,42 @@ if (memoryPlate) {
     rest.removeAttribute("aria-hidden");
   };
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    fillRest();
+  const runTypewriter = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      fillRest();
+      return;
+    }
+
+    // Append visible glyphs only — never park opacity:0 / hidden chars in the
+    // DOM (they still take layout and race the bubble ahead of the typewriter).
+    const units = Array.from(REST);
+    units.forEach((ch, index) => {
+      window.setTimeout(() => {
+        rest.appendChild(document.createTextNode(ch));
+      }, START_MS + index * ENTER_STAGGER_MS);
+    });
+  };
+
+  // Do not start while the password gate is up — wait for gate.js unlock.
+  const root = document.documentElement;
+  if (root.classList.contains("gate-open")) {
+    runTypewriter();
     return;
   }
 
-  // Append visible glyphs only — never park opacity:0 / hidden chars in the
-  // DOM (they still take layout and race the bubble ahead of the typewriter).
-  const units = Array.from(REST);
-  units.forEach((ch, index) => {
-    window.setTimeout(() => {
-      rest.appendChild(document.createTextNode(ch));
-    }, START_MS + index * ENTER_STAGGER_MS);
+  let started = false;
+  let observer = null;
+  const startOnce = () => {
+    if (started) return;
+    started = true;
+    document.removeEventListener("alice-gate-open", startOnce);
+    if (observer) observer.disconnect();
+    runTypewriter();
+  };
+
+  document.addEventListener("alice-gate-open", startOnce, { once: true });
+  observer = new MutationObserver(() => {
+    if (root.classList.contains("gate-open")) startOnce();
   });
+  observer.observe(root, { attributes: true, attributeFilter: ["class"] });
 })();
