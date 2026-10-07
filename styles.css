@@ -1655,12 +1655,19 @@ button.news-card {
   line-height: 9px;
 }
 
-/* First-screen plates: rise from below the fold (plate-rise).
-   Travel is one viewport in .screen layout pixels; divide by --fit-scale
-   because .screen is scaled. Synced with hello bubble-pop (delay 0.12s).
+/* First-screen plates: timeless.co/type lower collage rise.
+   Travel is one viewport in .screen layout pixels (visually 100vh).
+   transform scale() also scales translations, so divide by --fit-scale.
+   On the desktop stage (--fit-scale: 1, capped at 812px) this is at least
+   the stage height, so even the topmost plate starts fully below the fold.
+   The same offset is the used transform before the delay ends (fill-mode: both).
+   2.5s, cubic-bezier(0.48, -0.11, 0.49, 1.03).
+   Synced with .hello bubble-pop (delay 0.12s): first plate starts with the
+   bubble; short stagger by top — Delay = 0.12s + ((top − 246) / 843) * 1.3s.
    Play class `.plates-play` is added once after gate unlock (no scroll replay). */
 .plate-enter {
   --plate-travel: calc(100vh / var(--fit-scale));
+  /* Hold below the fold until gate unlock; plate-rise starts with gate-open. */
   transform: translateY(var(--plate-travel));
 }
 
@@ -1669,11 +1676,11 @@ html.gate-open.plates-play .plate-enter {
 }
 
 html.gate-open.plates-play .portrait.plate-enter { animation-delay: 0.12s; }
-html.gate-open.plates-play .studio-widget.plate-enter { animation-delay: 0.32s; }
-html.gate-open.plates-play .memory-widget.plate-enter { animation-delay: 0.52s; }
-html.gate-open.plates-play .memory-card.plate-enter { animation-delay: 0.72s; }
-html.gate-open.plates-play .tools-widget.plate-enter { animation-delay: 0.92s; }
-html.gate-open.plates-play .note.plate-enter { animation-delay: 1.12s; }
+html.gate-open.plates-play .studio-widget.plate-enter { animation-delay: 0.159s; }
+html.gate-open.plates-play .memory-widget.plate-enter { animation-delay: 0.432s; }
+html.gate-open.plates-play .memory-card.plate-enter { animation-delay: 0.49s; }
+html.gate-open.plates-play .tools-widget.plate-enter { animation-delay: 0.56s; }
+html.gate-open.plates-play .note.plate-enter { animation-delay: 0.638s; }
 
 @keyframes plate-rise {
   from { transform: translateY(var(--plate-travel)); }
