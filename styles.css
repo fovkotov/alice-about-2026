@@ -629,8 +629,7 @@ button.news-card {
 }
 
 .news-card.doctor p,
-.news-card.rights p,
-.news-card.pin p {
+.news-card.rights p {
   color: #fff;
 }
 
@@ -670,7 +669,7 @@ button.news-card {
 .pin-more {
   position: absolute;
   right: 16px;
-  top: 16px;
+  top: 356px;
   z-index: 2;
 }
 
