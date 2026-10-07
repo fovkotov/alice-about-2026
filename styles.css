@@ -40,7 +40,7 @@
   --ink-soft: rgba(48, 43, 49, 0.48);
   --ink-strong: #1e2026;
   --page-w: 375px;
-  --page-h: 6397px;
+  --page-h: 5893px;
   /* Phone width-fit scale. JS sets the precise value from clientWidth;
      CSS fallback uses layout viewport so first paint is already filled. */
   --fit-scale: calc(100vw / var(--page-w));
@@ -1274,136 +1274,38 @@ button.news-card {
   }
 }
 
-/* Figma 607:25008 — Алиса Плюс (after live-talk) */
-.alice-plus {
+/* Figma 631:80233 — surfaces grid (replaces Alice Plus + app homes) */
+.surfaces {
   position: absolute;
   left: 0;
   top: 5130px;
   width: var(--page-w);
-  height: 786px;
-  overflow: visible;
+  height: 715px;
+  overflow: hidden;
 }
 
-.alice-plus-card {
-  position: relative;
+.surfaces-art {
+  display: block;
   width: var(--page-w);
-  height: 558px;
-  border-radius: 96px 96px 0 0;
-  background: linear-gradient(180deg, #7a55ff 0%, #fff 100%);
-  /* Art intentionally hangs below the card into the white page (Figma group h=786). */
-  overflow: visible;
-}
-
-.alice-plus-copy {
-  position: absolute;
-  left: 24px;
-  top: 79px;
-  width: 327px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  text-align: center;
-  color: #fff;
-  z-index: 2;
-}
-
-.alice-plus-copy h2 {
-  color: #fff;
-  font-size: 56px;
-  line-height: 50px;
-}
-
-.alice-plus-copy p {
-  color: #fff;
-  font-size: 15px;
-  line-height: 22px;
-}
-
-.alice-plus-actions {
-  position: absolute;
-  left: 61.5px;
-  top: 235px;
-  width: 252px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  z-index: 3;
-}
-
-.btn-plus-try {
-  position: relative;
-  flex: 0 0 136px;
-  width: 136px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 21px 22px 23px;
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.48);
-  background: #fff;
-  color: var(--ink);
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 22px;
-  font-variation-settings: "wght" 500, "wdth" 50;
-  box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.16);
-}
-
-.btn-plus-more {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  color: #fff;
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 20px;
-  font-variation-settings: "wght" 500, "wdth" 50;
-  white-space: nowrap;
-}
-
-.btn-plus-more img {
-  width: 15px;
-  height: 15px;
-  margin-bottom: 2px;
-}
-
-.alice-plus-art {
-  position: absolute;
-  left: calc(50% + 91px);
-  top: 213px;
-  width: 785px;
-  height: 573px;
+  height: 715px;
   max-width: none;
-  transform: translateX(-50%);
   object-fit: cover;
-  object-position: bottom;
+  object-position: top center;
   pointer-events: none;
-  z-index: 1;
+  user-select: none;
 }
 
-/* Figma 607:31705 — app CTA */
-.app-homes {
+.surfaces-download {
   position: absolute;
-  left: 44px;
-  top: 6182px;
-  width: 287px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  text-align: center;
-}
-
-.app-homes h2 {
-  font-size: 56px;
-  line-height: 50px;
-}
-
-.app-homes p {
-  font-size: 15px;
-  line-height: 22px;
-  color: var(--ink-soft);
+  left: 40px;
+  top: 92px;
+  width: 132px;
+  height: 48px;
+  border-radius: 28px;
+  /* Hotzone over Figma «скачать»; art already draws the pill. */
+  color: transparent;
+  font-size: 0;
+  z-index: 2;
 }
 
 .char {
