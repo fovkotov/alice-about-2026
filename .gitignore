@@ -1,4 +1,3 @@
+node_modules/
 .vercel
-node_modules
-middleware.js
-vercel.json
+.env*
