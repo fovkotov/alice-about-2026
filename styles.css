@@ -798,19 +798,22 @@ button.news-card {
   justify-content: center;
   width: 100%;
   height: 68px;
-  border-radius: 32px;
+  border-radius: 999px;
   font-weight: 500;
   font-size: 19px;
   line-height: 24px;
   font-variation-settings: "wght" 500, "wdth" 50;
 }
 
+/* Figma 607:26020 — soft pill CTA with purple glow + inset depth */
 .btn-lg {
   background: var(--alice);
   color: #fff;
   box-shadow:
-    inset 0 -3px 8px rgba(0, 0, 0, 0.16),
-    inset 0 3px 8px rgba(255, 255, 255, 0.24);
+    0 12px 32px rgba(122, 85, 255, 0.36),
+    0 4px 10px rgba(122, 85, 255, 0.22),
+    inset 0 2px 4px rgba(255, 255, 255, 0.32),
+    inset 0 -4px 10px rgba(55, 20, 150, 0.28);
 }
 
 .btn-white {
@@ -1106,6 +1109,73 @@ button.news-card {
   left: 263px;
   top: 20px;
   z-index: 4;
+}
+
+/* Figma 607:25169 — UI overlays on cast cards (names, captions, +)
+   animate in when the cast stage enters view. Photos stay put. */
+.cast-ui-staged .char-copy,
+.cast-ui-staged .cast-close {
+  opacity: 0;
+}
+
+.cast-ui-play .char-copy,
+.cast-ui-play .cast-close {
+  animation-duration: 600ms;
+  animation-timing-function: var(--ease-motion-out);
+  animation-fill-mode: both;
+}
+
+.cast-ui-play .sharik .char-copy {
+  animation-name: cast-ui-rise;
+  animation-delay: 0s;
+}
+
+.cast-ui-play .cast-close {
+  animation-name: cast-ui-pop;
+  animation-delay: 0.12s;
+}
+
+.cast-ui-play .elis .char-copy {
+  animation-name: cast-ui-rise;
+  animation-delay: 0.24s;
+}
+
+.cast-ui-play .friend .char-copy {
+  animation-name: cast-ui-rise;
+  animation-delay: 0.36s;
+}
+
+@keyframes cast-ui-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cast-ui-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cast-ui-staged .char-copy,
+  .cast-ui-staged .cast-close,
+  .cast-ui-play .char-copy,
+  .cast-ui-play .cast-close {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Figma 607:25158 — Живое общение (after cast, before Plus) */

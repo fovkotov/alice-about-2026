@@ -220,6 +220,28 @@ if (taskUi && !reduceMotion) {
   }
 }
 
+// Figma 607:25169 — cast card UI (names, captions, +) animate when stage enters view.
+const castStage = document.querySelector(".cast-stage");
+if (castStage && !reduceMotion) {
+  castStage.classList.add("cast-ui-staged");
+  const playCastUi = () => castStage.classList.add("cast-ui-play");
+  const resetCastUi = () => castStage.classList.remove("cast-ui-play");
+  if ("IntersectionObserver" in window) {
+    const castUiObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+          playCastUi();
+        } else if (!entry.isIntersecting) {
+          resetCastUi();
+        }
+      }
+    }, { threshold: [0, 0.45] });
+    castUiObserver.observe(castStage);
+  } else {
+    playCastUi();
+  }
+}
+
 const taskPlate = document.querySelector(".memory-card");
 if (taskPlate) {
   const toggleTask = () => {
