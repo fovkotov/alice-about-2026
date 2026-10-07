@@ -1474,34 +1474,80 @@ button.news-card {
   line-height: 9px;
 }
 
-/* First-screen plates: timeless.co/type lower collage rise.
-   Travel is one viewport in .screen layout pixels (visually 100vh).
-   transform scale() also scales translations, so divide by --fit-scale.
-   On the desktop stage (--fit-scale: 1, capped at 812px) this is at least
-   the stage height, so even the topmost plate starts fully below the fold.
-   The same offset is the used transform before the delay ends (fill-mode: both).
-   2.5s, cubic-bezier(0.48, -0.11, 0.49, 1.03).
-   Synced with .hello bubble-pop (delay 0.12s): first plate starts with the
-   bubble; short stagger by top — Delay = 0.12s + ((top − 246) / 843) * 1.3s. */
+/* Figma 607:25017 — first-screen widget collage.
+   Each plate flies in from outside the viewport / artboard edge toward its
+   rest pose (side from final position). Travel is one viewport in .screen
+   layout pixels; divide by --fit-scale because .screen is scaled.
+   Sequential stagger 0.2s; duration 700ms; Motion easeOut.
+   Play class `.plates-play` is toggled by IntersectionObserver (replay). */
 .plate-enter {
-  --plate-travel: calc(100vh / var(--fit-scale));
-  /* Hold below the fold until gate unlock; plate-rise starts with gate-open. */
-  transform: translateY(var(--plate-travel));
+  --plate-x: calc(100vw / var(--fit-scale));
+  --plate-y: calc(100vh / var(--fit-scale));
 }
 
-html.gate-open .plate-enter {
-  animation: plate-rise 2.5s cubic-bezier(0.48, -0.11, 0.49, 1.03) both;
+.portrait.plate-enter {
+  transform: translateY(calc(-1 * var(--plate-y)));
+}
+.studio-widget.plate-enter {
+  transform: translateX(calc(-1 * var(--plate-x)));
+}
+.memory-widget.plate-enter {
+  transform: translate(calc(-1 * var(--plate-x)), var(--plate-y));
+}
+.memory-card.plate-enter {
+  transform: translateX(var(--plate-x));
+}
+.note.plate-enter {
+  transform: translateY(var(--plate-y));
 }
 
-html.gate-open .portrait.plate-enter { animation-delay: 0.12s; }
-html.gate-open .studio-widget.plate-enter { animation-delay: 0.159s; }
-html.gate-open .memory-widget.plate-enter { animation-delay: 0.432s; }
-html.gate-open .memory-card.plate-enter { animation-delay: 0.49s; }
-html.gate-open .note.plate-enter { animation-delay: 0.638s; }
+html.gate-open.plates-play .plate-enter {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-motion-out);
+  animation-fill-mode: both;
+}
 
-@keyframes plate-rise {
-  from { transform: translateY(var(--plate-travel)); }
-  to { transform: translateY(0); }
+/* Reading order by top, then side: portrait → studio → memory → card → note */
+html.gate-open.plates-play .portrait.plate-enter {
+  animation-name: plate-fly-top;
+  animation-delay: 0s;
+}
+html.gate-open.plates-play .studio-widget.plate-enter {
+  animation-name: plate-fly-left;
+  animation-delay: 0.2s;
+}
+html.gate-open.plates-play .memory-widget.plate-enter {
+  animation-name: plate-fly-bottom-left;
+  animation-delay: 0.4s;
+}
+html.gate-open.plates-play .memory-card.plate-enter {
+  animation-name: plate-fly-right;
+  animation-delay: 0.6s;
+}
+html.gate-open.plates-play .note.plate-enter {
+  animation-name: plate-fly-bottom;
+  animation-delay: 0.8s;
+}
+
+@keyframes plate-fly-top {
+  from { transform: translateY(calc(-1 * var(--plate-y))); }
+  to { transform: translate(0, 0); }
+}
+@keyframes plate-fly-left {
+  from { transform: translateX(calc(-1 * var(--plate-x))); }
+  to { transform: translate(0, 0); }
+}
+@keyframes plate-fly-right {
+  from { transform: translateX(var(--plate-x)); }
+  to { transform: translate(0, 0); }
+}
+@keyframes plate-fly-bottom {
+  from { transform: translateY(var(--plate-y)); }
+  to { transform: translate(0, 0); }
+}
+@keyframes plate-fly-bottom-left {
+  from { transform: translate(calc(-1 * var(--plate-x)), var(--plate-y)); }
+  to { transform: translate(0, 0); }
 }
 
 @keyframes bubble-pop {

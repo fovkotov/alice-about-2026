@@ -164,6 +164,54 @@ if (studio && !reduceMotion) {
   }
 }
 
+// Figma 607:25017 — first-screen widgets fly in from all edges, sequential.
+// Replay on leave → re-enter like studio / task-ui chips pattern.
+(function () {
+  const root = document.documentElement;
+  const anchor = document.querySelector(".portrait.plate-enter");
+  if (!anchor) return;
+
+  const play = () => root.classList.add("plates-play");
+  const reset = () => {
+    root.classList.remove("plates-play");
+    // Force style flush so the next play restarts keyframes.
+    void anchor.offsetWidth;
+  };
+
+  if (reduceMotion) {
+    // CSS snaps plates to finals once gate-open; no IO needed.
+    return;
+  }
+
+  const bindObserver = () => {
+    if (!("IntersectionObserver" in window)) {
+      play();
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            play();
+          } else if (!entry.isIntersecting) {
+            reset();
+          }
+        }
+      },
+      { threshold: [0, 0.5] }
+    );
+    observer.observe(anchor);
+  };
+
+  if (root.classList.contains("gate-open")) {
+    bindObserver();
+  } else {
+    document.addEventListener("alice-gate-open", bindObserver, { once: true });
+    // Fallback if gate already unlocked before this script ran.
+    if (root.classList.contains("gate-open")) bindObserver();
+  }
+})();
+
 const taskUi = document.querySelector(".tasks .task-card .task-ui");
 if (taskUi && !reduceMotion) {
   taskUi.classList.add("task-ui-staged");
