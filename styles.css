@@ -40,7 +40,7 @@
   --ink-soft: rgba(48, 43, 49, 0.48);
   --ink-strong: #1e2026;
   --page-w: 375px;
-  --page-h: 6908px;
+  --page-h: 6631px;
   /* Phone width-fit scale. JS sets the precise value from clientWidth;
      CSS fallback uses layout viewport so first paint is already filled. */
   --fit-scale: calc(100vw / var(--page-w));
@@ -1442,54 +1442,32 @@ button.news-card {
 
 .alice-plus-art {
   position: absolute;
-  left: -114px;
-  top: 213px;
-  width: 785px;
-  height: 573px;
+  left: 50%;
+  top: 248px;
+  width: 640px;
+  height: 640px;
   max-width: none;
-  object-fit: cover;
-  object-position: bottom center;
+  transform: translateX(-46%);
+  object-fit: contain;
+  object-position: center bottom;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Figma 640:30076 — app download block (607:31705 copy + hero card) */
+/* Figma 640:30076 — «В приложении» hero + surfaces grid (607:25017 group) */
 .app-homes {
   position: absolute;
   left: 0;
-  top: 6019px;
+  top: 5916px;
   width: var(--page-w);
-  height: 314px;
+  height: 715px;
+  overflow: hidden;
 }
 
-.app-homes-copy {
-  position: absolute;
-  left: 44px;
-  top: 0;
-  width: 287px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  text-align: center;
-}
-
-.app-homes-copy h2 {
-  font-size: 38px;
-  line-height: 40px;
-}
-
-.app-homes-copy p {
-  font-size: 15px;
-  line-height: 22px;
-  color: var(--ink-soft);
-}
-
-.app-homes-download-art {
-  position: absolute;
-  left: 0;
-  top: 174px;
+.app-homes-art {
+  display: block;
   width: var(--page-w);
-  height: 140px;
+  height: 715px;
   max-width: none;
   object-fit: cover;
   object-position: top center;
@@ -1497,37 +1475,16 @@ button.news-card {
   user-select: none;
 }
 
-.app-download {
+.app-homes-download {
   position: absolute;
   left: 40px;
-  top: 266px;
+  top: 92px;
   width: 132px;
   height: 48px;
   border-radius: 28px;
   color: transparent;
   font-size: 0;
   z-index: 2;
-}
-
-/* Figma 631:80233 — surfaces grid (after app download) */
-.surfaces {
-  position: absolute;
-  left: 0;
-  top: 6333px;
-  width: var(--page-w);
-  height: 575px;
-  overflow: hidden;
-}
-
-.surfaces-grid-art {
-  display: block;
-  width: var(--page-w);
-  height: 575px;
-  max-width: none;
-  object-fit: cover;
-  object-position: top center;
-  pointer-events: none;
-  user-select: none;
 }
 
 .char {
@@ -1687,11 +1644,11 @@ html.gate-open.plates-play .plate-enter {
 }
 
 html.gate-open.plates-play .portrait.plate-enter { animation-delay: 0.12s; }
-html.gate-open.plates-play .studio-widget.plate-enter { animation-delay: 0.159s; }
-html.gate-open.plates-play .memory-widget.plate-enter { animation-delay: 0.432s; }
-html.gate-open.plates-play .memory-card.plate-enter { animation-delay: 0.49s; }
-html.gate-open.plates-play .tools-widget.plate-enter { animation-delay: 0.56s; }
-html.gate-open.plates-play .note.plate-enter { animation-delay: 0.638s; }
+html.gate-open.plates-play .studio-widget.plate-enter { animation-delay: 0.32s; }
+html.gate-open.plates-play .memory-widget.plate-enter { animation-delay: 0.52s; }
+html.gate-open.plates-play .memory-card.plate-enter { animation-delay: 0.72s; }
+html.gate-open.plates-play .tools-widget.plate-enter { animation-delay: 0.92s; }
+html.gate-open.plates-play .note.plate-enter { animation-delay: 1.12s; }
 
 @keyframes plate-rise {
   from { transform: translateY(var(--plate-travel)); }
