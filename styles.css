@@ -40,7 +40,7 @@
   --ink-soft: rgba(48, 43, 49, 0.48);
   --ink-strong: #1e2026;
   --page-w: 375px;
-  --page-h: 5434px;
+  --page-h: 6397px;
   /* Phone width-fit scale. JS sets the precise value from clientWidth;
      CSS fallback uses layout viewport so first paint is already filled. */
   --fit-scale: calc(100vw / var(--page-w));
@@ -775,10 +775,11 @@ button.news-card {
 
 .task-card {
   position: relative;
-  height: 460px;
-  margin-top: 64px;
+  width: 314px;
+  height: 434px;
+  margin: 64px auto 0;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.4);
+  background: #fff;
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
@@ -787,127 +788,71 @@ button.news-card {
   margin-top: 4px;
 }
 
-.task-close {
-  position: absolute;
-  left: 270px;
-  top: 16px;
-}
-
-.welcome {
-  position: absolute;
-  left: 27px;
-  top: 135px;
-  width: 273px;
-}
-
-.welcome-title {
-  font-family: "YS Geo", sans-serif;
-  font-size: 22.8px;
-  line-height: 26px;
-  letter-spacing: 0.23px;
-  color: rgba(0, 0, 0, 0.9);
-}
-
-.chips {
-  display: flex;
-  flex-direction: column;
-  gap: 6.5px;
-  margin-top: 11px;
-}
-
-.chip-row {
-  display: flex;
-  gap: 6.5px;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  height: 33px;
-  padding: 0 13px;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.7);
-  font-family: "YS Geo", sans-serif;
-  font-size: 11.4px;
-  line-height: 16px;
-  letter-spacing: 0.11px;
-  white-space: nowrap;
-}
-
-.chip.brand {
-  background: #efebff;
-  color: #7a55ff;
-}
-
-.chip.grow {
-  flex: 1;
-  min-width: 0;
-}
-
-.chip img {
-  width: 13px;
-  height: 13px;
-}
-
-.chip-icons {
-  display: inline-flex;
-  align-items: center;
-}
-
-.chip-icons img {
-  border: 1.6px solid #f2f2f2;
-  border-radius: 50%;
-}
-
-.cal {
+/* Phone UI from Figma (314×434). Banded layers reuse one export so
+   scroll reveal can stagger the same way the old chips flew in. */
+.task-ui {
   position: relative;
-  width: 13px;
-  height: 13px;
-  margin-left: -3px;
+  width: 314px;
+  height: 434px;
 }
 
-.cal img {
-  width: 13px;
-  height: 13px;
-}
-
-.cal-glyph {
+.task-band {
   position: absolute;
-  left: 2px;
-  top: 2px;
-  width: 8px;
-  height: 8px;
-  border: 0;
-  border-radius: 0;
+  left: 0;
+  width: 314px;
+  overflow: hidden;
 }
 
-.globe {
-  margin-left: -3px;
-  border: 0 !important;
+.task-band img {
+  position: absolute;
+  left: 0;
+  width: 314px;
+  height: 434px;
+  max-width: none;
 }
 
-/* Chips land one after another, 600ms, Motion easeOut (see --ease-motion-out). */
-.chips-staged .chip {
+.task-band-a { top: 0; height: 108px; }
+.task-band-a img { top: 0; }
+
+.task-band-b { top: 108px; height: 72px; }
+.task-band-b img { top: -108px; }
+
+.task-band-c { top: 180px; height: 36px; }
+.task-band-c img { top: -180px; }
+
+.task-band-d { top: 216px; height: 218px; }
+.task-band-d img { top: -216px; }
+
+/* Same Motion easeOut stagger as the former suggestion chips. */
+.task-ui-staged .task-band {
   opacity: 0;
 }
 
-.chips-play .chip {
+.task-ui-play .task-band {
   animation-duration: 600ms;
   animation-timing-function: var(--ease-motion-out);
   animation-fill-mode: both;
 }
 
-.chips-play .chip-row .chip:nth-child(1) { animation-name: chip-fly-left; }
-.chips-play .chip-row .chip:nth-child(2) { animation-name: chip-fly-right; }
+.task-ui-play .task-band-a {
+  animation-name: chip-fly-left;
+  animation-delay: 0s;
+}
 
-.chips-play .chip-row:nth-child(1) .chip:nth-child(1) { animation-delay: 0s; }
-.chips-play .chip-row:nth-child(1) .chip:nth-child(2) { animation-delay: 0.2s; }
-.chips-play .chip-row:nth-child(2) .chip:nth-child(1) { animation-delay: 0.4s; }
-.chips-play .chip-row:nth-child(2) .chip:nth-child(2) { animation-delay: 0.6s; }
-.chips-play .chip-row:nth-child(3) .chip:nth-child(1) { animation-delay: 0.8s; }
-.chips-play .chip-row:nth-child(3) .chip:nth-child(2) { animation-delay: 1s; }
+.task-ui-play .task-band-b {
+  animation-name: chip-fly-right;
+  animation-delay: 0.2s;
+}
+
+.task-ui-play .task-band-c {
+  animation-name: chip-fly-left;
+  animation-delay: 0.4s;
+}
+
+.task-ui-play .task-band-d {
+  animation-name: chip-fly-left;
+  animation-delay: 0.6s;
+}
 
 @keyframes chip-fly-left {
   from { opacity: 0; transform: translate(-8px, 12px); }
@@ -920,8 +865,8 @@ button.news-card {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chips-staged .chip,
-  .chips-play .chip {
+  .task-ui-staged .task-band,
+  .task-ui-play .task-band {
     animation: none;
     opacity: 1;
     transform: none;
@@ -1088,11 +1033,177 @@ button.news-card {
   z-index: 4;
 }
 
-/* Figma 607:25008 — Алиса Плюс (after cast) */
+/* Figma 607:25158 — Живое общение (after cast, before Plus) */
+.live-talk {
+  position: absolute;
+  left: 0;
+  top: 4135px;
+  width: var(--page-w);
+  height: 908px;
+}
+
+.live-talk-card {
+  position: relative;
+  width: var(--page-w);
+  height: 908px;
+  border-radius: 96px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.live-talk-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.live-talk-photo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 112%;
+  height: 160%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center 42%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.live-talk-scrim {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.live-talk-scrim-top {
+  top: 0;
+  height: 274px;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 16, 22, 0.55) 0%,
+    rgba(20, 16, 22, 0.22) 48%,
+    rgba(20, 16, 22, 0) 100%
+  );
+}
+
+.live-talk-scrim-bottom {
+  bottom: 0;
+  height: 324px;
+  background: linear-gradient(
+    0deg,
+    rgba(20, 16, 22, 0.5) 0%,
+    rgba(20, 16, 22, 0.18) 52%,
+    rgba(20, 16, 22, 0) 100%
+  );
+}
+
+.live-talk-copy {
+  position: absolute;
+  left: 28px;
+  top: 86px;
+  width: 327px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+
+.live-talk-copy h2 {
+  color: #fff;
+  font-size: 38px;
+  line-height: 40px;
+}
+
+.live-talk-copy p {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.live-talk-bubble {
+  position: absolute;
+  left: 31px;
+  top: 510px;
+  width: 225px;
+  padding: 18px 22px 20px;
+  border-radius: 32px 8px 32px 32px;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  color: #302b31;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  font-variation-settings: "wght" 500, "wdth" 50;
+  z-index: 2;
+}
+
+.live-talk-actions {
+  position: absolute;
+  left: 62px;
+  top: 760px;
+  width: 252px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 3;
+}
+
+.btn-live-try {
+  flex: 0 0 136px;
+  width: 136px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 22px;
+  font-variation-settings: "wght" 500, "wdth" 50;
+  box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.btn-live-more {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  font-variation-settings: "wght" 500, "wdth" 50;
+  white-space: nowrap;
+}
+
+.btn-live-more img {
+  width: 15px;
+  height: 15px;
+  margin-bottom: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-talk-photo {
+    will-change: auto;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Figma 607:25008 — Алиса Плюс (after live-talk) */
 .alice-plus {
   position: absolute;
   left: 0;
-  top: 4120px;
+  top: 5130px;
   width: var(--page-w);
   height: 786px;
   overflow: visible;
@@ -1201,7 +1312,7 @@ button.news-card {
 .app-homes {
   position: absolute;
   left: 44px;
-  top: 5172px;
+  top: 6182px;
   width: 287px;
   display: flex;
   flex-direction: column;

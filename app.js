@@ -164,27 +164,25 @@ if (studio && !reduceMotion) {
   }
 }
 
-const welcome = document.querySelector(".tasks .task-card .welcome");
-const chips = welcome?.querySelector(".chips");
-if (chips && !reduceMotion) {
-  chips.classList.add("chips-staged");
-  const playChips = () => chips.classList.add("chips-play");
-  const resetChips = () => chips.classList.remove("chips-play");
-  const chipTarget = welcome || chips;
+const taskUi = document.querySelector(".tasks .task-card .task-ui");
+if (taskUi && !reduceMotion) {
+  taskUi.classList.add("task-ui-staged");
+  const playTaskUi = () => taskUi.classList.add("task-ui-play");
+  const resetTaskUi = () => taskUi.classList.remove("task-ui-play");
   if ("IntersectionObserver" in window) {
     // Replay fly-in every leave → re-enter: reset when fully out, play at ~50% in view.
-    const chipObserver = new IntersectionObserver((entries) => {
+    const taskUiObserver = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          playChips();
+          playTaskUi();
         } else if (!entry.isIntersecting) {
-          resetChips();
+          resetTaskUi();
         }
       }
     }, { threshold: [0, 0.5] });
-    chipObserver.observe(chipTarget);
+    taskUiObserver.observe(taskUi);
   } else {
-    playChips();
+    playTaskUi();
   }
 }
 
@@ -414,6 +412,74 @@ if (memoryPlate) {
     memoryPlate.setAttribute("aria-pressed", pressed ? "false" : "true");
   });
 }
+
+// Live-talk card: background photo parallax (slower than page scroll),
+// clipped by the card mask. Foreground copy/bubble/buttons stay fixed.
+(function () {
+  const FACTOR = 0.4;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const cards = Array.from(document.querySelectorAll("[data-parallax-card]"));
+  if (!cards.length) return;
+
+  const fitScale = () => {
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue("--fit-scale")
+      .trim();
+    const n = parseFloat(raw);
+    return Number.isFinite(n) && n > 0 ? n : 1;
+  };
+
+  const reset = () => {
+    for (const card of cards) {
+      const img = card.querySelector("[data-parallax-img]");
+      if (img) img.style.transform = "translate(-50%, -50%)";
+    }
+  };
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    if (reduceMotion.matches) {
+      reset();
+      return;
+    }
+    const viewH = window.innerHeight || document.documentElement.clientHeight;
+    const viewMid = viewH * 0.5;
+    const scale = fitScale();
+
+    for (const card of cards) {
+      const img = card.querySelector("[data-parallax-img]");
+      if (!img) continue;
+      const rect = card.getBoundingClientRect();
+      // Skip when fully off-screen (cheap out).
+      if (rect.bottom < -80 || rect.top > viewH + 80) continue;
+      const cardMid = rect.top + rect.height * 0.5;
+      // Screen-space offset → divide by --fit-scale (transform lives inside scaled .screen).
+      const offsetY = ((cardMid - viewMid) * FACTOR) / scale;
+      img.style.transform = `translate(-50%, calc(-50% + ${offsetY.toFixed(2)}px))`;
+    }
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  const onMotionChange = () => {
+    if (reduceMotion.matches) reset();
+    else update();
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", onScroll);
+    window.visualViewport.addEventListener("scroll", onScroll, { passive: true });
+  }
+  reduceMotion.addEventListener("change", onMotionChange);
+  update();
+})();
 
 (function () {
   const hello = document.querySelector(".hello");
