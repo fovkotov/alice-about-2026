@@ -1274,12 +1274,13 @@ html.gate-open .note.plate-enter { animation-delay: 0.638s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .plate-enter {
+  /* Still hold pre-unlock resting poses; snap only after gate-open. */
+  html.gate-open .plate-enter {
     animation: none;
     transform: none;
   }
 
-  .hello {
+  html.gate-open .hello {
     animation: none;
     transform: none;
     opacity: 1;
