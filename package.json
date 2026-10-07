@@ -1,0 +1,12 @@
+{
+  "name": "alice-about-2026",
+  "private": true,
+  "type": "module",
+  "description": "Alice About 2026 mobile prototype",
+  "scripts": {
+    "vendor": "mkdir -p vendor && cp node_modules/torph/dist/index.mjs vendor/torph.mjs && node scripts/patch-torph.mjs"
+  },
+  "dependencies": {
+    "torph": "^0.1.0"
+  }
+}
