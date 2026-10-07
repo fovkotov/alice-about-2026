@@ -495,11 +495,81 @@ html.gate-open .hello {
   gap: 3px;
 }
 
+/* First-screen Tools plate — under «Моя память», left of note (screenshot collage). */
+.tools-widget {
+  position: absolute;
+  left: 16px;
+  top: 565px;
+  width: 124px;
+  height: 124px;
+  padding: 11px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 26px;
+  background: #f2f2f2;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  box-shadow:
+    17px 74px 21px rgba(0, 0, 0, 0),
+    11px 47px 19px rgba(0, 0, 0, 0),
+    6px 27px 16px rgba(0, 0, 0, 0.01),
+    3px 12px 12px rgba(0, 0, 0, 0.02),
+    1px 3px 7px rgba(0, 0, 0, 0.02);
+  z-index: 4;
+}
+
+.tools-widget:focus-visible {
+  outline: 2px solid var(--alice);
+  outline-offset: 2px;
+}
+
+.tools-title {
+  font-family: "YS Geo", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.11px;
+  color: rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.tools-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  aspect-ratio: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.tools-icon {
+  display: block;
+  flex: none;
+}
+
 .note {
   position: absolute;
-  left: 29px;
-  top: 582px;
-  width: 317px;
+  /* Right of Tools plate — matches updated first-screen collage */
+  left: 148px;
+  top: 598px;
+  width: 214px;
   display: flex;
   align-items: center;
   gap: 0;
@@ -516,6 +586,11 @@ html.gate-open .hello {
     8px 8px 11px rgba(0, 0, 0, 0.17),
     2px 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 5;
+}
+
+/* Collage crop matches Figma screenshot (no «Перейти» pill on first screen). */
+.note .note-go {
+  display: none;
 }
 
 .note img {
@@ -1497,8 +1572,11 @@ button.news-card {
 .memory-card.plate-enter {
   transform: translateX(var(--plate-x));
 }
+.tools-widget.plate-enter {
+  transform: translate(calc(-1 * var(--plate-x)), var(--plate-y));
+}
 .note.plate-enter {
-  transform: translateY(var(--plate-y));
+  transform: translate(var(--plate-x), var(--plate-y));
 }
 
 html.gate-open.plates-play .plate-enter {
@@ -1507,7 +1585,7 @@ html.gate-open.plates-play .plate-enter {
   animation-fill-mode: both;
 }
 
-/* Reading order by top, then side: portrait → studio → memory → card → note */
+/* Reading order by top, then side: portrait → studio → memory → card → tools → note */
 html.gate-open.plates-play .portrait.plate-enter {
   animation-name: plate-fly-top;
   animation-delay: 0s;
@@ -1524,9 +1602,13 @@ html.gate-open.plates-play .memory-card.plate-enter {
   animation-name: plate-fly-right;
   animation-delay: 0.6s;
 }
-html.gate-open.plates-play .note.plate-enter {
-  animation-name: plate-fly-bottom;
+html.gate-open.plates-play .tools-widget.plate-enter {
+  animation-name: plate-fly-bottom-left;
   animation-delay: 0.8s;
+}
+html.gate-open.plates-play .note.plate-enter {
+  animation-name: plate-fly-bottom-right;
+  animation-delay: 1s;
 }
 
 @keyframes plate-fly-top {
@@ -1547,6 +1629,10 @@ html.gate-open.plates-play .note.plate-enter {
 }
 @keyframes plate-fly-bottom-left {
   from { transform: translate(calc(-1 * var(--plate-x)), var(--plate-y)); }
+  to { transform: translate(0, 0); }
+}
+@keyframes plate-fly-bottom-right {
+  from { transform: translate(var(--plate-x), var(--plate-y)); }
   to { transform: translate(0, 0); }
 }
 

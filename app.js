@@ -165,51 +165,37 @@ if (studio && !reduceMotion) {
 }
 
 // Figma 607:25017 — first-screen widgets fly in from all edges, sequential.
-// Replay on leave → re-enter like studio / task-ui chips pattern.
+// Once on open (after gate unlock), same moment as the hello bubble — no
+// scroll leave/re-enter replay (studio / chips keep their own IO).
 (function () {
   const root = document.documentElement;
-  const anchor = document.querySelector(".portrait.plate-enter");
-  if (!anchor) return;
-
-  const play = () => root.classList.add("plates-play");
-  const reset = () => {
-    root.classList.remove("plates-play");
-    // Force style flush so the next play restarts keyframes.
-    void anchor.offsetWidth;
-  };
+  if (!document.querySelector(".plate-enter")) return;
 
   if (reduceMotion) {
-    // CSS snaps plates to finals once gate-open; no IO needed.
+    // CSS snaps plates to finals once gate-open; no play class needed.
     return;
   }
 
-  const bindObserver = () => {
-    if (!("IntersectionObserver" in window)) {
-      play();
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            play();
-          } else if (!entry.isIntersecting) {
-            reset();
-          }
-        }
-      },
-      { threshold: [0, 0.5] }
-    );
-    observer.observe(anchor);
+  let started = false;
+  let classObserver = null;
+  const playOnce = () => {
+    if (started) return;
+    started = true;
+    document.removeEventListener("alice-gate-open", playOnce);
+    if (classObserver) classObserver.disconnect();
+    root.classList.add("plates-play");
   };
 
   if (root.classList.contains("gate-open")) {
-    bindObserver();
-  } else {
-    document.addEventListener("alice-gate-open", bindObserver, { once: true });
-    // Fallback if gate already unlocked before this script ran.
-    if (root.classList.contains("gate-open")) bindObserver();
+    playOnce();
+    return;
   }
+
+  document.addEventListener("alice-gate-open", playOnce, { once: true });
+  classObserver = new MutationObserver(() => {
+    if (root.classList.contains("gate-open")) playOnce();
+  });
+  classObserver.observe(root, { attributes: true, attributeFilter: ["class"] });
 })();
 
 const taskUi = document.querySelector(".tasks .task-card .task-ui");
