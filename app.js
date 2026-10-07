@@ -164,7 +164,7 @@ if (studio && !reduceMotion) {
   }
 }
 
-// Figma 607:25017 — first-screen widgets fly in from all edges, sequential.
+// First-screen widgets rise from below; stagger with hello bubble.
 // Once on open (after gate unlock), same moment as the hello bubble — no
 // scroll leave/re-enter replay (studio / chips keep their own IO).
 (function () {

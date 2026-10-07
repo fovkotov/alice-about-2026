@@ -40,7 +40,7 @@
   --ink-soft: rgba(48, 43, 49, 0.48);
   --ink-strong: #1e2026;
   --page-w: 375px;
-  --page-h: 5893px;
+  --page-h: 6908px;
   /* Phone width-fit scale. JS sets the precise value from clientWidth;
      CSS fallback uses layout viewport so first paint is already filled. */
   --fit-scale: calc(100vw / var(--page-w));
@@ -1346,20 +1346,150 @@ button.news-card {
   }
 }
 
-/* Figma 631:80233 — surfaces grid (replaces Alice Plus + app homes) */
-.surfaces {
+/* Figma 607:25008 — Алиса Плюс (after live-talk) */
+.alice-plus {
   position: absolute;
   left: 0;
   top: 5130px;
   width: var(--page-w);
-  height: 715px;
-  overflow: hidden;
+  height: 786px;
+  overflow: visible;
 }
 
-.surfaces-art {
-  display: block;
+.alice-plus-card {
+  position: relative;
   width: var(--page-w);
-  height: 715px;
+  height: 558px;
+  border-radius: 96px 96px 0 0;
+  background: linear-gradient(180deg, #7a55ff 0%, #fff 100%);
+  overflow: visible;
+}
+
+.alice-plus-copy {
+  position: absolute;
+  left: 24px;
+  top: 79px;
+  width: 327px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+
+.alice-plus-copy h2 {
+  color: #fff;
+  font-size: 56px;
+  line-height: 50px;
+}
+
+.alice-plus-copy p {
+  color: #fff;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.alice-plus-actions {
+  position: absolute;
+  left: 61.5px;
+  top: 235px;
+  width: 252px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 3;
+}
+
+.btn-plus-try {
+  position: relative;
+  flex: 0 0 136px;
+  width: 136px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 21px 22px 23px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 22px;
+  font-variation-settings: "wght" 500, "wdth" 50;
+  box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.16);
+}
+
+.btn-plus-more {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  font-variation-settings: "wght" 500, "wdth" 50;
+  white-space: nowrap;
+}
+
+.btn-plus-more img {
+  width: 15px;
+  height: 15px;
+  margin-bottom: 2px;
+}
+
+.alice-plus-art {
+  position: absolute;
+  left: -114px;
+  top: 213px;
+  width: 785px;
+  height: 573px;
+  max-width: none;
+  object-fit: cover;
+  object-position: bottom center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Figma 640:30076 — app download block (607:31705 copy + hero card) */
+.app-homes {
+  position: absolute;
+  left: 0;
+  top: 6019px;
+  width: var(--page-w);
+  height: 314px;
+}
+
+.app-homes-copy {
+  position: absolute;
+  left: 44px;
+  top: 0;
+  width: 287px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.app-homes-copy h2 {
+  font-size: 38px;
+  line-height: 40px;
+}
+
+.app-homes-copy p {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--ink-soft);
+}
+
+.app-homes-download-art {
+  position: absolute;
+  left: 0;
+  top: 174px;
+  width: var(--page-w);
+  height: 140px;
   max-width: none;
   object-fit: cover;
   object-position: top center;
@@ -1367,17 +1497,37 @@ button.news-card {
   user-select: none;
 }
 
-.surfaces-download {
+.app-download {
   position: absolute;
   left: 40px;
-  top: 92px;
+  top: 266px;
   width: 132px;
   height: 48px;
   border-radius: 28px;
-  /* Hotzone over Figma «скачать»; art already draws the pill. */
   color: transparent;
   font-size: 0;
   z-index: 2;
+}
+
+/* Figma 631:80233 — surfaces grid (after app download) */
+.surfaces {
+  position: absolute;
+  left: 0;
+  top: 6333px;
+  width: var(--page-w);
+  height: 575px;
+  overflow: hidden;
+}
+
+.surfaces-grid-art {
+  display: block;
+  width: var(--page-w);
+  height: 575px;
+  max-width: none;
+  object-fit: cover;
+  object-position: top center;
+  pointer-events: none;
+  user-select: none;
 }
 
 .char {
@@ -1523,91 +1673,29 @@ button.news-card {
   line-height: 9px;
 }
 
-/* Figma 607:25017 — first-screen widget collage.
-   Each plate flies in from outside the viewport / artboard edge toward its
-   rest pose (side from final position). Travel is one viewport in .screen
-   layout pixels; divide by --fit-scale because .screen is scaled.
-   Sequential stagger 0.2s; duration 700ms; Motion easeOut.
+/* First-screen plates: rise from below the fold (plate-rise).
+   Travel is one viewport in .screen layout pixels; divide by --fit-scale
+   because .screen is scaled. Synced with hello bubble-pop (delay 0.12s).
    Play class `.plates-play` is added once after gate unlock (no scroll replay). */
 .plate-enter {
-  --plate-x: calc(100vw / var(--fit-scale));
-  --plate-y: calc(100vh / var(--fit-scale));
-}
-
-.portrait.plate-enter {
-  transform: translateY(calc(-1 * var(--plate-y)));
-}
-.studio-widget.plate-enter {
-  transform: translateX(calc(-1 * var(--plate-x)));
-}
-.memory-widget.plate-enter {
-  transform: translate(calc(-1 * var(--plate-x)), var(--plate-y));
-}
-.memory-card.plate-enter {
-  transform: translateX(var(--plate-x));
-}
-.tools-widget.plate-enter {
-  transform: translate(calc(-1 * var(--plate-x)), var(--plate-y));
-}
-.note.plate-enter {
-  transform: translate(var(--plate-x), var(--plate-y));
+  --plate-travel: calc(100vh / var(--fit-scale));
+  transform: translateY(var(--plate-travel));
 }
 
 html.gate-open.plates-play .plate-enter {
-  animation-duration: 700ms;
-  animation-timing-function: var(--ease-motion-out);
-  animation-fill-mode: both;
+  animation: plate-rise 2.5s cubic-bezier(0.48, -0.11, 0.49, 1.03) both;
 }
 
-/* Reading order by top, then side: portrait → studio → memory → card → tools → note */
-html.gate-open.plates-play .portrait.plate-enter {
-  animation-name: plate-fly-top;
-  animation-delay: 0s;
-}
-html.gate-open.plates-play .studio-widget.plate-enter {
-  animation-name: plate-fly-left;
-  animation-delay: 0.2s;
-}
-html.gate-open.plates-play .memory-widget.plate-enter {
-  animation-name: plate-fly-bottom-left;
-  animation-delay: 0.4s;
-}
-html.gate-open.plates-play .memory-card.plate-enter {
-  animation-name: plate-fly-right;
-  animation-delay: 0.6s;
-}
-html.gate-open.plates-play .tools-widget.plate-enter {
-  animation-name: plate-fly-bottom-left;
-  animation-delay: 0.8s;
-}
-html.gate-open.plates-play .note.plate-enter {
-  animation-name: plate-fly-bottom-right;
-  animation-delay: 1s;
-}
+html.gate-open.plates-play .portrait.plate-enter { animation-delay: 0.12s; }
+html.gate-open.plates-play .studio-widget.plate-enter { animation-delay: 0.159s; }
+html.gate-open.plates-play .memory-widget.plate-enter { animation-delay: 0.432s; }
+html.gate-open.plates-play .memory-card.plate-enter { animation-delay: 0.49s; }
+html.gate-open.plates-play .tools-widget.plate-enter { animation-delay: 0.56s; }
+html.gate-open.plates-play .note.plate-enter { animation-delay: 0.638s; }
 
-@keyframes plate-fly-top {
-  from { transform: translateY(calc(-1 * var(--plate-y))); }
-  to { transform: translate(0, 0); }
-}
-@keyframes plate-fly-left {
-  from { transform: translateX(calc(-1 * var(--plate-x))); }
-  to { transform: translate(0, 0); }
-}
-@keyframes plate-fly-right {
-  from { transform: translateX(var(--plate-x)); }
-  to { transform: translate(0, 0); }
-}
-@keyframes plate-fly-bottom {
-  from { transform: translateY(var(--plate-y)); }
-  to { transform: translate(0, 0); }
-}
-@keyframes plate-fly-bottom-left {
-  from { transform: translate(calc(-1 * var(--plate-x)), var(--plate-y)); }
-  to { transform: translate(0, 0); }
-}
-@keyframes plate-fly-bottom-right {
-  from { transform: translate(var(--plate-x), var(--plate-y)); }
-  to { transform: translate(0, 0); }
+@keyframes plate-rise {
+  from { transform: translateY(var(--plate-travel)); }
+  to { transform: translateY(0); }
 }
 
 @keyframes bubble-pop {
