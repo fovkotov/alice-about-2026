@@ -40,7 +40,7 @@
   --ink-soft: rgba(48, 43, 49, 0.48);
   --ink-strong: #1e2026;
   --page-w: 375px;
-  --page-h: 6631px;
+  --page-h: 6805px;
   /* Phone width-fit scale. JS sets the precise value from clientWidth;
      CSS fallback uses layout viewport so first paint is already filled. */
   --fit-scale: calc(100vw / var(--page-w));
@@ -1442,29 +1442,54 @@ button.news-card {
 
 .alice-plus-art {
   position: absolute;
-  left: 50%;
-  top: 248px;
-  width: 640px;
-  height: 640px;
+  left: -114px;
+  top: 213px;
+  width: 785px;
+  height: 573px;
   max-width: none;
-  transform: translateX(-46%);
-  object-fit: contain;
-  object-position: center bottom;
+  object-fit: cover;
+  object-position: bottom center;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Figma 640:30076 — «В приложении» hero + surfaces grid (607:25017 group) */
+/* Figma 640:30076 — copy (607:31705) + hero + surfaces grid */
 .app-homes {
   position: absolute;
   left: 0;
   top: 5916px;
   width: var(--page-w);
-  height: 715px;
+  height: 889px;
   overflow: hidden;
 }
 
+.app-homes-copy {
+  position: absolute;
+  left: 44px;
+  top: 0;
+  width: 287px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  z-index: 2;
+}
+
+.app-homes-copy h2 {
+  font-size: 38px;
+  line-height: 40px;
+}
+
+.app-homes-copy p {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--ink-soft);
+}
+
 .app-homes-art {
+  position: absolute;
+  left: 0;
+  top: 174px;
   display: block;
   width: var(--page-w);
   height: 715px;
@@ -1478,7 +1503,7 @@ button.news-card {
 .app-homes-download {
   position: absolute;
   left: 40px;
-  top: 92px;
+  top: 266px;
   width: 132px;
   height: 48px;
   border-radius: 28px;
