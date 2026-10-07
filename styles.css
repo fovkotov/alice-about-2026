@@ -1180,7 +1180,7 @@ button.news-card {
   }
 }
 
-/* Figma 607:25158 — Живое общение (after cast, before Plus) */
+/* Figma 607:25158 card + 631:35335 parallax photo layer */
 .live-talk {
   position: absolute;
   left: 0;
@@ -1210,11 +1210,12 @@ button.news-card {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 112%;
-  height: 160%;
+  /* Figma 631:35335 — 836×1186 photo frame in 375×908 card */
+  width: 223%;
+  height: 131%;
   max-width: none;
   object-fit: cover;
-  object-position: center 42%;
+  object-position: 53% 45%;
   transform: translate(-50%, -50%);
   will-change: transform;
 }

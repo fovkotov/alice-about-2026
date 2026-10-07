@@ -472,7 +472,7 @@ if (memoryPlate) {
 // Live-talk card: background photo parallax (slower than page scroll),
 // clipped by the card mask. Foreground copy/bubble/buttons stay fixed.
 (function () {
-  const FACTOR = 0.4;
+  const FACTOR = 0.35;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const cards = Array.from(document.querySelectorAll("[data-parallax-card]"));
   if (!cards.length) return;
