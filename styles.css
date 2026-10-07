@@ -1554,7 +1554,7 @@ button.news-card {
    rest pose (side from final position). Travel is one viewport in .screen
    layout pixels; divide by --fit-scale because .screen is scaled.
    Sequential stagger 0.2s; duration 700ms; Motion easeOut.
-   Play class `.plates-play` is toggled by IntersectionObserver (replay). */
+   Play class `.plates-play` is added once after gate unlock (no scroll replay). */
 .plate-enter {
   --plate-x: calc(100vw / var(--fit-scale));
   --plate-y: calc(100vh / var(--fit-scale));
